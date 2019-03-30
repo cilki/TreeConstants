@@ -122,7 +122,7 @@ public final class TreeConstantProcessor extends AbstractProcessor {
 			for (int i = 0; i < path.length; i++) {
 
 				// Java keywords are not allowed
-				if (SourceVersion.isName(path[i]))
+				if (!SourceVersion.isName(path[i]))
 					path[i] = path[i] + "_";
 
 				if (i == path.length - 1) {
