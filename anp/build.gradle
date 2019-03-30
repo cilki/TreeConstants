@@ -7,7 +7,7 @@ plugins {
 
 eclipse {
 	project {
-		name = 'TreeConstants'
+		name = 'anp'
 		comment = 'An annotation processor that builds constant trees'
 	}
 }
@@ -17,8 +17,12 @@ repositories {
 }
 
 dependencies {
-	compileOnly project(':api')
-	annotationProcessor project(':anp')
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+	
+	implementation project(':api')
+
+	// https://github.com/square/javapoet
+	implementation 'com.squareup:javapoet:1.11.1'
 }
 
 test {
@@ -39,15 +43,15 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			groupId = 'com.github.cilki'
-			artifactId = 'tree-constants-common'
+			artifactId = 'tree-constants'
 			version = BUILD_VERSION
 
 			from components.java
 			artifact sourcesJar
 			artifact javadocJar
 			pom {
-				name = 'TreeConstants Common'
-				description = 'Common constant trees in the standard library'
+				name = 'TreeConstants Annotation Processor'
+				description = ''
 				url = 'https://github.com/cilki/TreeConstants'
 				licenses {
 					license {

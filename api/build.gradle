@@ -7,22 +7,9 @@ plugins {
 
 eclipse {
 	project {
-		name = 'TreeConstants'
+		name = 'api'
 		comment = 'An annotation processor that builds constant trees'
 	}
-}
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	compileOnly project(':api')
-	annotationProcessor project(':anp')
-}
-
-test {
-	useJUnitPlatform()
 }
 
 task sourcesJar(type: Jar) {
@@ -39,15 +26,15 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			groupId = 'com.github.cilki'
-			artifactId = 'tree-constants-common'
+			artifactId = 'tree-constants-api'
 			version = BUILD_VERSION
 
 			from components.java
 			artifact sourcesJar
 			artifact javadocJar
 			pom {
-				name = 'TreeConstants Common'
-				description = 'Common constant trees in the standard library'
+				name = 'TreeConstants API'
+				description = ''
 				url = 'https://github.com/cilki/TreeConstants'
 				licenses {
 					license {
