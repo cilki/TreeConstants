@@ -44,14 +44,14 @@ publishing {
 		mavenJava(MavenPublication) {
 			groupId = 'com.github.cilki'
 			artifactId = 'tree-constants'
-			version = BUILD_VERSION
+			version = TREECONSTANTS_VERSION
 
 			from components.java
 			artifact sourcesJar
 			artifact javadocJar
 			pom {
 				name = 'TreeConstants Annotation Processor'
-				description = ''
+				description = 'An annotation processor that builds constant trees'
 				url = 'https://github.com/cilki/TreeConstants'
 				licenses {
 					license {
