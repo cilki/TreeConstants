@@ -1,0 +1,101 @@
+plugins {
+	id 'eclipse'
+	id 'jacoco'
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+eclipse {
+	project {
+		name = 'TreeConstants'
+		comment = 'An annotation processor that builds constant trees'
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+
+	// https://github.com/qos-ch/slf4j
+	implementation 'org.slf4j:slf4j-api:1.7.26'
+
+	// https://github.com/square/javapoet
+	implementation 'com.squareup:javapoet:1.11.1'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled false
+	}
+}
+
+check.dependsOn jacocoTestReport
+
+task sourcesJar(type: Jar) {
+	from sourceSets.main.allJava
+	archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+	from javadoc
+	archiveClassifier = 'javadoc'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId = 'com.github.cilki'
+			artifactId = 'tree-constants'
+			version = BUILD_VERSION
+
+			from components.java
+			artifact sourcesJar
+			artifact javadocJar
+			pom {
+				name = 'TreeConstants'
+				description = ''
+				url = 'https://github.com/cilki/TreeConstants'
+				licenses {
+					license {
+						name = 'The Apache License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+				developers {
+					developer {
+						id = 'cilki'
+						name = 'Tyler Cook'
+						email = 'tcc@sandpolis.com'
+					}
+				}
+				scm {
+					connection = 'scm:git:git://github.com/cilki/TreeConstants.git'
+					developerConnection = 'scm:git:ssh://git@github.com/cilki/TreeConstants.git'
+					url = 'https://github.com/cilki/TreeConstants'
+				}
+			}
+		}
+	}
+	repositories {
+		maven {
+			url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+			credentials {
+				username PUBLISH_USER
+				password PUBLISH_PASS
+			}
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.mavenJava
+}
