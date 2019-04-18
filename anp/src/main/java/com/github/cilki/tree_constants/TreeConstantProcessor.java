@@ -54,6 +54,16 @@ import com.squareup.javapoet.TypeSpec;
 public final class TreeConstantProcessor extends AbstractProcessor {
 
 	/**
+	 * Whether source code will be emitted in the first round of annotation
+	 * processing. Doing so avoids a compile warning, but is technically incorrect
+	 * because some constants will be missed if they show up in later rounds. If
+	 * this situation arises, then this should be switched back to {@code false}.
+	 * The current setting should be fine as long as other annotation processors do
+	 * not produce {@link TreeConstant} fields.
+	 */
+	private static final boolean EMIT_FIRST_ROUND = true;
+
+	/**
 	 * Maps fully qualified tree constant class names to root {@link Node}s.
 	 */
 	private Map<String, Node> trees = new HashMap<>();
@@ -70,19 +80,20 @@ public final class TreeConstantProcessor extends AbstractProcessor {
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment round) {
-		if (annotations.isEmpty()) {
-			// This is the final round; time to write the source files
-			for (Node root : trees.values()) {
-				try {
-					JavaFile.builder(root.packageName, root.toTypeSpec().build()).build()
-							.writeTo(processingEnv.getFiler());
-				} catch (FilerException e) {
-					// Ignore
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			trees.clear();
+		if (round.processingOver()) {
+			if (!EMIT_FIRST_ROUND)
+				// Time to write the source files
+				emitSource();
+
+			return true;
+		}
+
+		// Check whether the source has already been emitted
+		if (trees == null) {
+			// Warn if some constants will be skipped
+			if (!annotations.isEmpty())
+				System.out.println(
+						annotations.size() + " annotations will be skipped due to unsafe EMIT_FIRST_ROUND setting");
 			return false;
 		}
 
@@ -98,14 +109,9 @@ public final class TreeConstantProcessor extends AbstractProcessor {
 				packageName = processingEnv.getElementUtils().getPackageOf(elem).getQualifiedName().toString();
 
 			String rootName = annotation.name();
-			if (rootName.isEmpty()) {
+			if (rootName.isEmpty())
 				// Set a default name
-				String className = elem.getEnclosingElement().getSimpleName().toString();
-				if (className.endsWith("Constants"))
-					rootName = className.substring(0, className.length() - 1);
-				else
-					rootName = className + "Constant";
-			}
+				rootName = getDefaultName(elem.getEnclosingElement().getSimpleName().toString());
 
 			Node root = trees.get(packageName + "." + rootName);
 			if (root == null) {
@@ -159,7 +165,45 @@ public final class TreeConstantProcessor extends AbstractProcessor {
 			}
 		});
 
+		if (EMIT_FIRST_ROUND)
+			// Time to write the source files
+			emitSource();
+
 		return true;
+	}
+
+	/**
+	 * Write the root classes that were built incrementally during annotation
+	 * processing.
+	 */
+	private void emitSource() {
+		if (trees == null)
+			throw new IllegalStateException("Source has already been emitted");
+
+		for (Node root : trees.values()) {
+			try {
+				JavaFile.builder(root.packageName, root.toTypeSpec().build()).build().writeTo(processingEnv.getFiler());
+			} catch (FilerException e) {
+				// Ignore
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		trees.clear();
+		trees = null;
+	}
+
+	/**
+	 * Get the default class name for the root of a constant tree.
+	 * 
+	 * @param className The name of the class that contains a {@link TreeConstant}
+	 * @return The default class name
+	 */
+	private String getDefaultName(String className) {
+		if (className.endsWith("Constants"))
+			return className.substring(0, className.length() - 1);
+		else
+			return className + "Constant";
 	}
 
 	/**
