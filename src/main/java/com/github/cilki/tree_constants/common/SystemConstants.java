@@ -19,10 +19,16 @@ package com.github.cilki.tree_constants.common;
 
 import com.github.cilki.tree_constants.TreeConstant;
 
+/**
+ * Constants that can be used with {@link #System.getProperty(String)}.
+ */
 public final class SystemConstants {
 
 	@TreeConstant
 	private static final String awt_toolkit = "awt.toolkit";
+
+	@TreeConstant
+	private static final String file_encoding = "file.encoding";
 
 	/**
 	 * Character that separates components of a file path. This is "/" on UNIX and
@@ -48,11 +54,17 @@ public final class SystemConstants {
 	@TreeConstant
 	private static final String java_home = "java.home";
 
+	/**
+	 * The system temporary directory.
+	 */
 	@TreeConstant
 	private static final String java_io_tmpdir = "java.io.tmpdir";
 
 	@TreeConstant
 	private static final String java_library_path = "java.library.path";
+
+	@TreeConstant
+	private static final String java_runtime_name = "java.runtime.name";
 
 	@TreeConstant
 	private static final String java_specification_vendor = "java.specification.vendor";
@@ -80,6 +92,9 @@ public final class SystemConstants {
 
 	@TreeConstant
 	private static final String java_version_date = "java.version.date";
+
+	@TreeConstant
+	private static final String java_vm_info = "java.vm.info";
 
 	@TreeConstant
 	private static final String java_vm_name = "java.vm.name";
@@ -126,6 +141,9 @@ public final class SystemConstants {
 	@TreeConstant
 	private static final String sun_boot_library_path = "sun.boot.library.path";
 
+	/**
+	 * The CPU's endianness.
+	 */
 	@TreeConstant
 	private static final String sun_cpu_endian = "sun.cpu.endian";
 
@@ -138,6 +156,9 @@ public final class SystemConstants {
 	@TreeConstant
 	private static final String sun_jnu_encoding = "sun.jnu.encoding";
 
+	/**
+	 * User country.
+	 */
 	@TreeConstant
 	private static final String user_country = "user.country";
 
@@ -153,6 +174,9 @@ public final class SystemConstants {
 	@TreeConstant
 	private static final String user_home = "user.home";
 
+	/**
+	 * User language code.
+	 */
 	@TreeConstant
 	private static final String user_language = "user.language";
 
@@ -162,6 +186,9 @@ public final class SystemConstants {
 	@TreeConstant
 	private static final String user_name = "user.name";
 
+	/**
+	 * User timezone.
+	 */
 	@TreeConstant
 	private static final String user_timezone = "user.timezone";
 
