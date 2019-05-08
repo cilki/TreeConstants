@@ -35,12 +35,16 @@ public @interface TreeConstant {
 
 	/**
 	 * The package for the tree's root type.
+	 * 
+	 * @return The package name
 	 */
 	public String packageName() default "";
 
 	/**
 	 * A name for the tree's root type. Defaults to the enclosing class name +
 	 * "Constant".
+	 * 
+	 * @return The root name
 	 */
 	public String name() default "";
 }

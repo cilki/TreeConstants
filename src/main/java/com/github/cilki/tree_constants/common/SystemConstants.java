@@ -20,7 +20,7 @@ package com.github.cilki.tree_constants.common;
 import com.github.cilki.tree_constants.TreeConstant;
 
 /**
- * Constants that can be used with {@link #System.getProperty(String)}.
+ * Constants that can be used with {@code System.getProperty(String)}.
  */
 public final class SystemConstants {
 
