@@ -82,7 +82,7 @@ public final class SystemConstants {
 	 * JRE vendor URL.
 	 */
 	@TreeConstant
-	private static final String java_vendor_url = "java.vendor";
+	private static final String java_vendor__url = "java.vendor.url";
 
 	/**
 	 * JRE version number.
@@ -91,7 +91,7 @@ public final class SystemConstants {
 	private static final String java_version = "java.version";
 
 	@TreeConstant
-	private static final String java_version_date = "java.version.date";
+	private static final String java_version__date = "java.version.date";
 
 	@TreeConstant
 	private static final String java_vm_info = "java.vm.info";
@@ -136,7 +136,7 @@ public final class SystemConstants {
 	 * Path separator character used in {@code java.class.path}.
 	 */
 	@TreeConstant
-	private static final String path_separator = "path_separator";
+	private static final String path_separator = "path.separator";
 
 	@TreeConstant
 	private static final String sun_boot_library_path = "sun.boot.library.path";

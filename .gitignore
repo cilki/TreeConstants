@@ -9,3 +9,7 @@ bin
 .project
 .classpath
 .settings
+
+# Generated files
+.apt_generated
+.factorypath
