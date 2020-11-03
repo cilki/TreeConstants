@@ -22,7 +22,7 @@ dependencies {
 	implementation project(':api')
 
 	// https://github.com/square/javapoet
-	implementation 'com.squareup:javapoet:1.11.1'
+	implementation 'com.squareup:javapoet:1.13.0'
 }
 
 test {
